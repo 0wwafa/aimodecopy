@@ -8,6 +8,8 @@
 // @match        https://www.google.com/search?*
 // @grant        none
 // @run-at       document-end
+// @home         https://0wwafa.github.io/aimodecopy
+// @homepageURL  https://0wwafa.github.io/aimodecopy
 // @downloadURL https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js
 // @updateURL https://0wwafa.github.io/aimodecopy/print_ai_mode.meta.js
 // ==/UserScript==
