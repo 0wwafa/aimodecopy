@@ -1,16 +1,15 @@
 // ==UserScript==
-// @name         Google AI Markdown Copier - Universal (Embedded + Full)
+// @name         Google AI Markdown Copier - Universal Icon
 // @namespace    http://tampermonkey.net/
-// @version      10.0
-// @description  Adds a Copy icon to Google AI answers in both Embedded Overview and Full AI Mode.
+// @version      15.0
+// @description  Agnostic injection before Share or Labs icons in Google AI results.
 // @author       Zibri
 // @author       Robert Sinclair
 // @match        https://www.google.com/search?*
 // @grant        none
 // @run-at       document-end
-// @home         https://0wwafa.github.io/aimodecopy
 // @homepageURL  https://0wwafa.github.io/aimodecopy
+// @downloadURL  https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js
 // @source       https://0wwafa.github.io/aimodecopy
-// @downloadURL https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js
-// @updateURL https://0wwafa.github.io/aimodecopy/print_ai_mode.meta.js
+// @updateURL    https://0wwafa.github.io/aimodecopy/print_ai_mode.meta.js
 // ==/UserScript==
