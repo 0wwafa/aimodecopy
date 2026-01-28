@@ -21,7 +21,7 @@ Currently, if you want to save an AI response, you are forced to manually highli
 
 ## Installation
 
-1. Install the **Tampermonkey** extension for your browser ([Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/), [Edge](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahigpbaeffnfbbepea)).
+1. Install the **Tampermonkey** extension for your browser ([Chrome](https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo), [Firefox](https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/), [Edge](https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahmlepeloendndfphd)).
 2. Click the link below to install the script:
    - [**Install Google AI Markdown Copier**](https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js)
 3. Refresh any open Google Search pages.
