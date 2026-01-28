@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google AI Markdown Copier | Universal Search Tool</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --google-blue: #4285f4;
+            --google-red: #ea4335;
+            --google-yellow: #fbbc05;
+            --google-green: #34a853;
+            --text-main: #202124;
+            --text-light: #5f6368;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            background-color: #fff;
+        }
+
+        header {
+            background-color: #fff;
+            border-bottom: 1px solid #dadce0;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--text-light);
+        }
+
+        .logo span:nth-child(1) { color: var(--google-blue); }
+        .logo span:nth-child(2) { color: var(--google-red); }
+        .logo span:nth-child(3) { color: var(--google-yellow); }
+        .logo span:nth-child(4) { color: var(--google-blue); }
+        .logo span:nth-child(5) { color: var(--google-green); }
+        .logo span:nth-child(6) { color: var(--google-red); }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .tagline {
+            font-size: 1.25rem;
+            color: var(--text-light);
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 24px;
+            background-color: var(--google-blue);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: background-color 0.2s, box-shadow 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        }
+
+        .btn:hover {
+            background-color: #1a73e8;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+        }
+
+        .btn i {
+            margin-right: 10px;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .card {
+            background: var(--bg-light);
+            border-radius: 12px;
+            padding: 2rem;
+            border: 1px solid #dadce0;
+        }
+
+        .missing-feature-box {
+            border-left: 5px solid var(--google-red);
+            background: #fff5f4;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 4px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-item i {
+            color: var(--google-blue);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            margin-top: 0;
+            font-weight: 500;
+        }
+
+        code {
+            background: #f1f3f4;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-light);
+            border-top: 1px solid #dadce0;
+        }
+
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 1.5rem;
+        }
+
+        .step-number {
+            background: var(--google-blue);
+            color: white;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            flex-shrink: 0;
+            font-weight: bold;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.8rem; }
+            .container { padding: 2rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">
+        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span> AI Copier
+    </div>
+    <a href="https://github.com/Zibri/Google-AI-Markdown-Copier" class="text-light" style="color: var(--text-light); text-decoration: none;">
+        <i class="fab fa-github"></i> GitHub
+    </a>
+</header>
+
+<div class="container">
+    <section class="hero">
+        <h1>Copy Google AI Answers Instantly</h1>
+        <p class="tagline">Convert AI Overviews and Search Results into perfectly formatted Markdown with a single click.</p>
+        <a href="https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js" class="btn">
+            <i class="fas fa-file-download"></i> Install Userscript
+        </a>
+    </section>
+
+    <section class="section">
+        <div class="missing-feature-box">
+            <strong><i class="fas fa-exclamation-circle"></i> The Missing Button</strong>
+            <p>Google provides powerful AI summaries, yet for some unknown reason, they did not include a "Copy" button. Manually highlighting text often includes unwanted UI elements, buttons, and citations. This script restores the functionality Google left out.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <h2>Features</h2>
+        <div class="features-grid">
+            <div class="feature-item">
+                <i class="fas fa-bolt"></i>
+                <h3>Universal Support</h3>
+                <p>Works in both the standard <strong>AI Overview</strong> (Embedded) and the <strong>Full AI Search Mode</strong>.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fab fa-markdown"></i>
+                <h3>Clean Markdown</h3>
+                <p>Automatically converts headers, bold text, italics, and lists into clean Markdown for your notes.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-table"></i>
+                <h3>Table Parsing</h3>
+                <p>Extracts AI-generated data tables into standard Markdown tables, perfect for Obsidian or Notion.</p>
+            </div>
+            <div class="feature-item">
+                <i class="fas fa-broom"></i>
+                <h3>No Clutter</h3>
+                <p>Smart filtering removes citation numbers, feedback icons, and timestamps from your clipboard.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section card">
+        <h2>How to Install</h2>
+        <div class="step">
+            <div class="step-number">1</div>
+            <div>Install <strong>Tampermonkey</strong> for <a href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Chrome</a>, <a href="https://addons.mozilla.org/en-US/firefox/addon/tampermonkey/">Firefox</a>, or <a href="https://microsoftedge.microsoft.com/addons/detail/tampermonkey/iikmkjmpaadaobahigpbaeffnfbbepea">Edge</a>.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div>Click the <a href="https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js">Install Script</a> link.</div>
+        </div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div>Refresh Google Search. Look for the <i class="far fa-clipboard"></i> icon next to the "Share" button on any AI response.</div>
+        </div>
+    </section>
+
+</div>
+
+<footer>
+    <p>Created by <strong>Zibri</strong></p>
+    <p style="font-size: 0.8rem; opacity: 0.7;">This project is open source and not affiliated with Google LLC.</p>
+</footer>
+
+</body>
+</html>
