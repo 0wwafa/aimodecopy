@@ -1,18 +1,17 @@
 // ==UserScript==
-// @name         Google AI Markdown Copier - Universal (Embedded + Full)
+// @name         Google AI Markdown Copier - Universal Icon
 // @namespace    http://tampermonkey.net/
-// @version      10.0
-// @description  Adds a Copy icon to Google AI answers in both Embedded Overview and Full AI Mode.
+// @version      15.0
+// @description  Agnostic injection before Share or Labs icons in Google AI results.
 // @author       Zibri
 // @author       Robert Sinclair
 // @match        https://www.google.com/search?*
 // @grant        none
 // @run-at       document-end
-// @home         https://0wwafa.github.io/aimodecopy
 // @homepageURL  https://0wwafa.github.io/aimodecopy
 // @downloadURL  https://0wwafa.github.io/aimodecopy/print_ai_mode.user.js
 // @source       https://0wwafa.github.io/aimodecopy
-// @updateURL https://0wwafa.github.io/aimodecopy/print_ai_mode.meta.js
+// @updateURL    https://0wwafa.github.io/aimodecopy/print_ai_mode.meta.js
 // ==/UserScript==
 
 (function() {
@@ -20,25 +19,35 @@
 
     const TAG = "[AI-MD-Hook]";
 
-    // --- Markdown Extraction Logic ---
+    // Hardcoded SVG path start markers (Google's "Biological Signatures")
+    const SIG_SHARE = "M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7";
+    const SIG_LABS  = "M5.95 19.975C5.33889 19.975";
 
-    function getMarkdownFromTurn(turnElement) {
+    /**
+     * EXTRACTOR: Locates the answer text and converts to Markdown.
+     */
+    function getMarkdownFromTurn(anchorElement) {
+        // Find the nearest broad container for this specific turn
+        const turn = anchorElement.closest('[data-scope-id="turn"], .CKgc1d, .OZ9ddf, .Pqkn2e, .mZJni') || document.body;
+
         let md = "";
-        // Target headers, paragraphs, and list items found in both AI modes
-        const elements = turnElement.querySelectorAll('.otQkpb, .Y3BBE, .KsbFXc li, table.NRefec, [role="heading"][aria-level="3"], .VndcI');
+        const elements = turn.querySelectorAll('table, li, [role="heading"], [data-sfc-cp], .Y3BBE, .otQkpb');
 
         if (elements.length === 0) return null;
 
         elements.forEach(el => {
-            if (el.classList.contains('otQkpb') || el.classList.contains('VndcI')) {
-                md += `\n### ${el.innerText.trim()}\n\n`;
+            if (el.closest('.md-copy-anchor')) return;
+
+            if (el.getAttribute('role') === 'heading') {
+                const level = el.getAttribute('aria-level') || '3';
+                md += `\n${'#'.repeat(parseInt(level))} ${el.innerText.trim()}\n\n`;
             } else if (el.tagName === 'TABLE') {
                 md += "\n" + parseTable(el) + "\n";
             } else if (el.tagName === 'LI') {
                 md += `* ${processInline(el)}\n`;
-            } else if (el.classList.contains('Y3BBE') || el.innerText.trim().length > 0) {
+            } else {
                 const line = processInline(el);
-                if (line) md += `${line}\n\n`;
+                if (line && line.length > 2) md += `${line}\n\n`;
             }
         });
 
@@ -47,12 +56,9 @@
 
     function processInline(el) {
         let clone = el.cloneNode(true);
-        // Remove citations, buttons, timestamps, and our own UI
-        clone.querySelectorAll('svg, button, style, script, .uJ19be, .txxDge, .UYpEO, .md-copy-wrapper, .cIcqpf').forEach(n => n.remove());
-        // Handle Bold
-        clone.querySelectorAll('.Yjhzub, strong, b').forEach(b => b.innerText = ` **${b.innerText.trim()}** `);
-        // Handle Italics
-        clone.querySelectorAll('.eujQNb, em, i').forEach(i => i.innerText = ` *${i.innerText.trim()}* `);
+        clone.querySelectorAll('svg, button, style, script, [aria-label*="links"], .md-copy-anchor').forEach(n => n.remove());
+        clone.querySelectorAll('strong, b, [style*="font-weight: 700"], [style*="font-weight: 600"]').forEach(b => b.innerText = ` **${b.innerText.trim()}** `);
+        clone.querySelectorAll('em, i, [style*="font-style: italic"]').forEach(i => i.innerText = ` *${i.innerText.trim()}* `);
         return clone.innerText.replace(/\s+/g, ' ').trim();
     }
 
@@ -67,90 +73,73 @@
         return tableMd;
     }
 
-    // --- UI Logic (Icon Button) ---
-
-    function createIconButton(markdown) {
+    /**
+     * UI: Create the copy icon button.
+     */
+    function createCopyIcon(markdown) {
         const wrapper = document.createElement('div');
-        wrapper.className = 'md-copy-wrapper';
-        wrapper.style.cssText = "display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; vertical-align: middle; flex-shrink: 0;";
+        wrapper.className = 'md-copy-anchor';
+        wrapper.setAttribute('title', 'Copy Markdown');
+        wrapper.style.cssText = "display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; cursor: pointer; color: #5f6368; flex-shrink: 0; transition: background 0.2s; border-radius: 50%; vertical-align: middle;";
 
-        const btn = document.createElement('button');
-        btn.setAttribute('aria-label', 'Copy Markdown');
-        btn.setAttribute('title', 'Copy Markdown');
-
-        btn.style.cssText = `
-            all: initial;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background-color: transparent;
-            color: #5f6368;
-            height: 36px;
-            width: 36px;
-            border-radius: 50%;
-            cursor: pointer;
-            transition: all 0.2s;
-            border: none;
-        `;
-
-        btn.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        wrapper.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="pointer-events:none;">
                 <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
                 <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
             </svg>
         `;
 
-        btn.addEventListener('mouseenter', () => btn.style.backgroundColor = 'rgba(60, 64, 67, 0.1)');
-        btn.addEventListener('mouseleave', () => btn.style.backgroundColor = 'transparent');
+        wrapper.addEventListener('mouseenter', () => wrapper.style.backgroundColor = 'rgba(60, 64, 67, 0.08)');
+        wrapper.addEventListener('mouseleave', () => wrapper.style.backgroundColor = 'transparent');
 
-        btn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
+        wrapper.addEventListener('click', (e) => {
+            e.preventDefault(); e.stopPropagation();
             navigator.clipboard.writeText(markdown).then(() => {
-                const originalColor = btn.style.color;
-                btn.style.color = "#137333";
-                btn.style.backgroundColor = "#e6f4ea";
-                setTimeout(() => {
-                    btn.style.color = originalColor;
-                    btn.style.backgroundColor = "transparent";
-                }, 1500);
+                const oldColor = wrapper.style.color;
+                wrapper.style.color = "#137333";
+                setTimeout(() => wrapper.style.color = oldColor, 1500);
             });
         });
 
-        wrapper.appendChild(btn);
         return wrapper;
     }
 
-    // --- Detection Logic ---
+    /**
+     * CORE: Detects Labs or Share SVG and injects button.
+     */
+    function performUniversalInjection() {
+        const svgs = document.querySelectorAll('svg');
 
-    function findAndInject() {
-        // Find both turn containers (Full mode) and Overview containers (Embedded mode)
-        const containers = document.querySelectorAll('.CKgc1d, .OZ9ddf, .Pqkn2e');
+        svgs.forEach(svg => {
+            const path = svg.querySelector('path');
+            if (!path) return;
 
-        containers.forEach((container) => {
-            // Find the interaction row where Share/Like buttons live
-            // We look for containers containing elements with "feedback" or "Share" labels
-            const interactionBar = container.querySelector('.zkL70c, .x2qcTc, .KXMsz') ||
-                                   container.querySelector('button[aria-label*="feedback"], button[aria-label*="Share"]')?.closest('div');
+            const d = path.getAttribute('d') || "";
+            // Heuristic check: is this a Share icon or a Labs icon?
+            const isTarget = d.startsWith(SIG_SHARE) || d.startsWith(SIG_LABS);
 
-            if (interactionBar && !interactionBar.querySelector('.md-copy-wrapper')) {
-                const markdown = getMarkdownFromTurn(container);
+            if (isTarget) {
+                // Find the interactive element wrapper (usually an <a> or <button> or <div>)
+                const anchor = svg.closest('a') || svg.closest('button') || svg.parentElement;
 
-                if (markdown && markdown.length > 20) {
-                    console.log(`%c${TAG} AI Content Found. Logging Markdown...`, "color: #fbbc04; font-weight: bold;");
-                    console.log(markdown);
-
-                    const iconBtn = createIconButton(markdown);
-                    interactionBar.appendChild(iconBtn);
+                // Ensure we don't inject multiple times into the same bar
+                const container = anchor.parentElement;
+                if (container && !container.querySelector('.md-copy-anchor')) {
+                    const md = getMarkdownFromTurn(anchor);
+                    if (md) {
+                        const copyBtn = createCopyIcon(md);
+                        container.insertBefore(copyBtn, anchor);
+                    }
                 }
             }
         });
     }
 
-    // High frequency observation to handle the "Generating..." phase transition
-    const observer = new MutationObserver(findAndInject);
+    // Monitor for changes (streaming answers or follow-up turns)
+    const observer = new MutationObserver(performUniversalInjection);
     observer.observe(document.body, { childList: true, subtree: true });
 
-    findAndInject();
+    // Run initial scan
+    performUniversalInjection();
 
 })();
